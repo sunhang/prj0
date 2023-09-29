@@ -1,0 +1,14 @@
+prefix=/home/sunhang/Documents/my-download-source/android/ffmpeg-android-maker/build/ffmpeg/arm64-v8a
+exec_prefix=${prefix}
+libdir=/home/sunhang/Documents/my-download-source/android/ffmpeg-android-maker/build/ffmpeg/arm64-v8a/lib
+includedir=/home/sunhang/Documents/my-download-source/android/ffmpeg-android-maker/build/ffmpeg/arm64-v8a/include
+
+Name: libavutil
+Description: FFmpeg utility library
+Version: 58.2.100
+Requires: 
+Requires.private: 
+Conflicts:
+Libs: -L${libdir}  -lavutil 
+Libs.private: -pthread -lm -latomic
+Cflags: -I${includedir}
