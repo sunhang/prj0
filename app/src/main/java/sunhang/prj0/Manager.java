@@ -4,11 +4,16 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import java.lang.ref.WeakReference;
 
 
 public class Manager {
     private Handler mHandle = new Handler(Looper.getMainLooper());
     private ImageView mIv;
+
+    private WeakReference<Thread> mWeakRefThread;
 
     void bindImageView(ImageView iv) {
         mIv = iv;
@@ -27,12 +32,19 @@ public class Manager {
     public native void nativeWork();
 
     public void start() {
-        Thread t = new Thread() {
+        Thread t = mWeakRefThread != null ? mWeakRefThread.get() : null;
+        if (t != null && t.isAlive()) {
+            Toast.makeText(mIv.getContext(), "已经存在正在运行的进程", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        t = new Thread() {
             @Override
             public void run() {
                 nativeWork();
             }
         };
+        mWeakRefThread =  new WeakReference<>(t);
         t.start();
     }
 
